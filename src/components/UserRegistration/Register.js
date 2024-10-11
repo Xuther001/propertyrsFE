@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-// import './Register.css';
-import axios from 'axios';
+import './Register.css';
+import axiosInstance from '../../configs/AxiosConfig';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -27,7 +27,7 @@ const Register = () => {
     setSuccess(false);
 
     try {
-      const response = await axios.post('/api/users/register', formData);
+      const response = await axiosInstance.post('/users/register', formData);
       
       if (response.status === 200) {
         setSuccess(true);
