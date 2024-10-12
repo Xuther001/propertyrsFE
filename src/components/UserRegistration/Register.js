@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Register.css';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../configs/AxiosConfig';
@@ -12,6 +12,7 @@ const Register = () => {
 
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [countdown, setCountdown] = useState(5);
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -26,15 +27,25 @@ const Register = () => {
     e.preventDefault();
     setError(null);
     setSuccess(false);
+    setCountdown(5);
 
     try {
       const response = await axiosInstance.post('/users/register', formData);
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         setSuccess(true);
         setFormData({ username: '', email: '', password: '' });
 
-        setTimeout(() => navigate('/'), 5000);
+        const countdownInterval = setInterval(() => {
+          setCountdown((prev) => {
+            if (prev <= 1) {
+              clearInterval(countdownInterval);
+              navigate('/');
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Error registering user');
@@ -48,7 +59,11 @@ const Register = () => {
   return (
     <div className="registration-form">
       <h2>Register</h2>
-      {success && <div className="success">Registration successful! Redirecting...</div>}
+      {success && (
+        <div className="success">
+          Registration successful! Redirecting to home page in {countdown} seconds...
+        </div>
+      )}
       {error && <div className="error">{error}</div>}
       
       <form onSubmit={handleSubmit}>
