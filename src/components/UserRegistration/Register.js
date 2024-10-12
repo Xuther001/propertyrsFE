@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Register.css';
+import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../configs/AxiosConfig';
 
 const Register = () => {
@@ -8,9 +9,10 @@ const Register = () => {
     email: '',
     password: '',
   });
-  
+
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -20,7 +22,6 @@ const Register = () => {
     });
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
@@ -28,25 +29,28 @@ const Register = () => {
 
     try {
       const response = await axiosInstance.post('/users/register', formData);
-      
+
       if (response.status === 200) {
         setSuccess(true);
-        setFormData({
-          username: '',
-          email: '',
-          password: '',
-        });
+        setFormData({ username: '', email: '', password: '' });
+
+        setTimeout(() => navigate('/'), 5000);
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Error registering user');
     }
   };
 
+  const handleGoHome = () => {
+    navigate('/');
+  };
+
   return (
     <div className="registration-form">
       <h2>Register</h2>
-      {success && <div className="success">Registration successful!</div>}
+      {success && <div className="success">Registration successful! Redirecting...</div>}
       {error && <div className="error">{error}</div>}
+      
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="username">Username</label>
@@ -59,7 +63,7 @@ const Register = () => {
             required
           />
         </div>
-        
+
         <div className="form-group">
           <label htmlFor="email">Email</label>
           <input
@@ -71,7 +75,7 @@ const Register = () => {
             required
           />
         </div>
-        
+
         <div className="form-group">
           <label htmlFor="password">Password</label>
           <input
@@ -83,9 +87,13 @@ const Register = () => {
             required
           />
         </div>
-        
+
         <button type="submit">Register</button>
       </form>
+
+      <button className="go-home-button" onClick={handleGoHome}>
+        Go to Home Page
+      </button>
     </div>
   );
 };
