@@ -32,7 +32,7 @@ const CreateProperty = () => {
     setSuccess(false);
 
     try {
-      const token = localStorage.getItem('authToken');
+      const token = localStorage.getItem('token');
 
       if (!token) {
         setError('You need to be logged in to post a property.');
@@ -40,7 +40,7 @@ const CreateProperty = () => {
       }
 
       const response = await axiosInstance.post(
-        '/properties',
+        '/property',
         formData,
         {
           headers: {
