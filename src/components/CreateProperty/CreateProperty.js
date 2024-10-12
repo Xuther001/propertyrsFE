@@ -13,6 +13,7 @@ const CreateProperty = () => {
     bedrooms: '',
     bathrooms: '',
     area: '',
+    images: [],
   });
 
   const [error, setError] = useState(null);
@@ -23,6 +24,14 @@ const CreateProperty = () => {
     setFormData({
       ...formData,
       [name]: value,
+    });
+  };
+
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    setFormData({
+      ...formData,
+      images: files,
     });
   };
 
@@ -41,7 +50,17 @@ const CreateProperty = () => {
 
       const response = await axiosInstance.post(
         '/property',
-        formData,
+        {
+          address: formData.address,
+          city: formData.city,
+          state: formData.state,
+          postal_code: formData.postal_code,
+          country: formData.country,
+          property_type: formData.property_type,
+          bedrooms: formData.bedrooms,
+          bathrooms: formData.bathrooms,
+          area: formData.area,
+        },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -50,18 +69,39 @@ const CreateProperty = () => {
       );
 
       if (response.status === 201) {
-        setSuccess(true);
-        setFormData({
-          address: '',
-          city: '',
-          state: '',
-          postal_code: '',
-          country: '',
-          property_type: '',
-          bedrooms: '',
-          bathrooms: '',
-          area: '',
+        const propertyId = response.data.property.property_id;
+
+        const formDataImages = new FormData();
+        formData.images.forEach((image) => {
+          formDataImages.append('images', image);
         });
+        
+        const uploadResponse = await axiosInstance.post(
+          `/property/${propertyId}/images`,
+          formDataImages,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+
+        if (uploadResponse.status === 200) {
+          setSuccess(true);
+          setFormData({
+            address: '',
+            city: '',
+            state: '',
+            postal_code: '',
+            country: '',
+            property_type: '',
+            bedrooms: '',
+            bathrooms: '',
+            area: '',
+            images: [],
+          });
+        }
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Error posting property');
@@ -181,6 +221,18 @@ const CreateProperty = () => {
             value={formData.area}
             onChange={handleInputChange}
             required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="images">Upload Images</label>
+          <input
+            type="file"
+            id="images"
+            name="images"
+            multiple
+            accept="image/*"
+            onChange={handleImageChange}
           />
         </div>
 
