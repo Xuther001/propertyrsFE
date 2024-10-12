@@ -33,6 +33,10 @@ const Register = () => {
       const response = await axiosInstance.post('/users/register', formData);
 
       if (response.status === 201) {
+        const { token } = response.data;
+
+        localStorage.setItem('authToken', token);
+
         setSuccess(true);
         setFormData({ username: '', email: '', password: '' });
 
