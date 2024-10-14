@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../../configs/AxiosConfig';
+import './UserProfile.css';
 
 const UserProfile = () => {
   const [properties, setProperties] = useState([]);
@@ -10,7 +11,6 @@ const UserProfile = () => {
     const fetchProperties = async () => {
       try {
         const response = await axiosInstance.get('/property');
-        console.log('API Response:', response.data); //delete later
         setProperties(response.data.properties || []);
       } catch (err) {
         setError('Failed to load properties');
@@ -23,18 +23,18 @@ const UserProfile = () => {
     fetchProperties();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) return <p className="loading-text">Loading...</p>;
+  if (error) return <p className="error-text">{error}</p>;
 
   return (
     <div className="profile-container">
-      <h1>My Properties</h1>
+      <h1 className="profile-title">My Properties</h1>
       <div className="property-list">
         {properties.length > 0 ? (
           properties.map((property) => (
             <div key={property.property_id} className="property-card">
-              <h2>{property.address}</h2>
-              <p>
+              <h2 className="property-address">{property.address}</h2>
+              <p className="property-location">
                 {property.city}, {property.state}, {property.country}
               </p>
               <div className="image-gallery">
@@ -50,6 +50,11 @@ const UserProfile = () => {
                 ) : (
                   <p>No images available</p>
                 )}
+              </div>
+              <div className="property-details">
+                <p className="details">Bedrooms: {property.bedrooms}</p>
+                <p className="details">Bathrooms: {property.bathrooms}</p>
+                <p className="details">Area: {property.area} sq ft</p>
               </div>
             </div>
           ))
