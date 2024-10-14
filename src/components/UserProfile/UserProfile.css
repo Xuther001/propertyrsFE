@@ -40,6 +40,8 @@
   .property-location {
     color: #7f8c8d;
     margin: 5px 0;
+    text-align: center;
+    font-size: 1.1rem;
   }
   
   .image-gallery {
@@ -67,9 +69,9 @@
     margin: 5px 0;
   }
   
-  .loading-text, .error-text {
+  .loading-text,
+  .error-text {
     text-align: center;
     color: #e74c3c;
     font-weight: bold;
-  }
-  
+  }  
