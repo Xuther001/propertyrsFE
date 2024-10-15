@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../../configs/AxiosConfig';
+import PropertyDetailsOverlay from '../PropertyDetailsOverlay/PropertyDetailsOverlay';
 import './ListingPage.css';
 
 const ListingPage = () => {
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedListing, setSelectedListing] = useState(null);
 
   useEffect(() => {
     const fetchListings = async () => {
@@ -41,6 +43,14 @@ const ListingPage = () => {
     fetchListings();
   }, []);
 
+  const handleListingClick = (listing) => {
+    setSelectedListing(listing);
+  };
+
+  const handleCloseOverlay = () => {
+    setSelectedListing(null);
+  };
+
   if (loading) return <p className="loading-text">Loading listings...</p>;
   if (error) return <p className="error-text">{error}</p>;
 
@@ -49,7 +59,11 @@ const ListingPage = () => {
       <h1>Property Listings</h1>
       <div className="listing-grid">
         {listings.map((listing) => (
-          <div key={listing.listing_id} className="listing-card">
+          <div
+            key={listing.listing_id}
+            className="listing-card"
+            onClick={() => handleListingClick(listing)}
+          >
             <h2>{listing.description}</h2>
             <p>Price: ${parseFloat(listing.price).toFixed(2)}</p>
             <p>Status: {listing.is_for_sale ? 'For Sale' : 'Not for Sale'}</p>
@@ -72,6 +86,13 @@ const ListingPage = () => {
           </div>
         ))}
       </div>
+
+      {selectedListing && (
+        <PropertyDetailsOverlay
+          listing={selectedListing}
+          onClose={handleCloseOverlay}
+        />
+      )}
     </div>
   );
 };
