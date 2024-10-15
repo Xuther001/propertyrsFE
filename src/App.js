@@ -6,6 +6,7 @@ import CreateProperty from './components/CreateProperty/CreateProperty';
 import LoginUser from './components/LoginUser/LoginUser';
 import UserProfile from './components/UserProfile/UserProfile';
 import ListingForm from './components/ListingForm/ListingForm';
+import ListingPage from './components/ListingPage/ListingPage';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/myprofile" element={<UserProfile />} />
         <Route path="/postproperty" element={<CreateProperty />} />
         <Route path="/listingform" element={<ListingForm />} />
+        <Route path="/listingpage" element={<ListingPage />} />
       </Routes>
     </Router>
   );
