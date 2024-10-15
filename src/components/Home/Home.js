@@ -15,8 +15,9 @@ const Home = () => {
         <Link to="/login" className="login-link">Login</Link>
         {isLoggedIn && (
           <>
-            <Link to="/postproperty" className="post-property-link">Post a Property</Link>
-            <Link to="/myprofile" className="profile-link">My Profile</Link>
+            <Link to="/postproperty" className="post-property-link">Add a Property</Link>
+            <Link to="/myprofile" className="profile-link">My Properties</Link>
+            <Link to="/listingform" className="listing-form-link">List a Property</Link>
           </>
         )}
         <Link to="/listingpage" className="listings-link">View Listings</Link>

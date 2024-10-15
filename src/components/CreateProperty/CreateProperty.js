@@ -110,7 +110,7 @@ const CreateProperty = () => {
 
   return (
     <div className="post-property-form">
-      <h2>Post a Property</h2>
+      <h2>Add a Property</h2>
       {success && <div className="success">Property posted successfully!</div>}
       {error && <div className="error">{error}</div>}
 
