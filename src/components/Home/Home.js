@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import './Home.css';
 
 const Home = () => {
+  const isLoggedIn = !!localStorage.getItem('token');
+
   return (
     <div className="home-container">
       <h1>Welcome to Property RS</h1>
@@ -11,9 +13,13 @@ const Home = () => {
       <div className="home-links">
         <Link to="/register" className="register-link">Create an Account</Link>
         <Link to="/login" className="login-link">Login</Link>
-        <Link to="/postproperty" className="post-property-link">Post a Property</Link>
+        {isLoggedIn && (
+          <>
+            <Link to="/postproperty" className="post-property-link">Post a Property</Link>
+            <Link to="/myprofile" className="profile-link">My Profile</Link>
+          </>
+        )}
         <Link to="/listingpage" className="listings-link">View Listings</Link>
-        <Link to="/myprofile" className="profile-link">My Profile</Link>
       </div>
       
       <div className="home-description">
