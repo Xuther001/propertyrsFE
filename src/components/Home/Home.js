@@ -7,9 +7,22 @@ const Home = () => {
     <div className="home-container">
       <h1>Welcome to Property RS</h1>
       <p>Join us to explore and list amazing properties!</p>
-      <Link to="/register" className="register-link">
-        Create an Account
-      </Link>
+
+      <div className="home-links">
+        <Link to="/register" className="register-link">Create an Account</Link>
+        <Link to="/login" className="login-link">Login</Link>
+        <Link to="/postproperty" className="post-property-link">Post a Property</Link>
+        <Link to="/listingpage" className="listings-link">View Listings</Link>
+        <Link to="/myprofile" className="profile-link">My Profile</Link>
+      </div>
+      
+      <div className="home-description">
+        <h2>Explore Your Options</h2>
+        <p>
+          Whether you are looking to buy, sell, or rent, Property RS provides a comprehensive platform
+          to meet all your property needs. Join us today and start exploring!
+        </p>
+      </div>
     </div>
   );
 };
