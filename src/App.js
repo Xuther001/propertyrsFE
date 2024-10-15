@@ -5,6 +5,7 @@ import Register from './components/UserRegistration/Register';
 import CreateProperty from './components/CreateProperty/CreateProperty';
 import LoginUser from './components/LoginUser/LoginUser';
 import UserProfile from './components/UserProfile/UserProfile';
+import ListingForm from './components/ListingForm/ListingForm';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/login" element={<LoginUser />} />
         <Route path="/myprofile" element={<UserProfile />} />
         <Route path="/postproperty" element={<CreateProperty />} />
+        <Route path="/listingform" element={<ListingForm />} />
       </Routes>
     </Router>
   );
