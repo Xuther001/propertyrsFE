@@ -14,6 +14,17 @@ const CreateProperty = () => {
     bedrooms: '',
     bathrooms: '',
     area: '',
+    lot_size: '',
+    year_built: '',
+    hoa_fee: '',
+    property_features: {},
+    flooring: [],
+    has_fireplace: false,
+    fireplace_features: '',
+    view_description: '',
+    parking: {},
+    utilities: {},
+    taxes: '',
     images: [],
   });
 
@@ -23,6 +34,11 @@ const CreateProperty = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handleCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+    setFormData({ ...formData, [name]: checked });
   };
 
   const handleImageChange = (e) => {
@@ -69,6 +85,17 @@ const CreateProperty = () => {
             bedrooms: '',
             bathrooms: '',
             area: '',
+            lot_size: '',
+            year_built: '',
+            hoa_fee: '',
+            property_features: {},
+            flooring: [],
+            has_fireplace: false,
+            fireplace_features: '',
+            view_description: '',
+            parking: {},
+            utilities: {},
+            taxes: '',
             images: [],
           });
         }
@@ -139,6 +166,71 @@ const CreateProperty = () => {
           <div className="form-group small-input">
             <label htmlFor="area">Area (sq ft)</label>
             <input type="number" step="0.01" id="area" name="area" value={formData.area} onChange={handleInputChange} required />
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div className="form-group small-input">
+            <label htmlFor="lot_size">Lot Size (acres)</label>
+            <input type="number" step="0.01" id="lot_size" name="lot_size" value={formData.lot_size} onChange={handleInputChange} />
+          </div>
+
+          <div className="form-group small-input">
+            <label htmlFor="year_built">Year Built</label>
+            <input type="number" id="year_built" name="year_built" value={formData.year_built} onChange={handleInputChange} />
+          </div>
+
+          <div className="form-group small-input">
+            <label htmlFor="hoa_fee">HOA Fee</label>
+            <input type="number" step="0.01" id="hoa_fee" name="hoa_fee" value={formData.hoa_fee} onChange={handleInputChange} />
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="property_features">Property Features (JSON)</label>
+            <input type="text" id="property_features" name="property_features" value={JSON.stringify(formData.property_features)} onChange={handleInputChange} placeholder='{"open_floorplan": true}' />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="flooring">Flooring (JSON)</label>
+            <input type="text" id="flooring" name="flooring" value={JSON.stringify(formData.flooring)} onChange={handleInputChange} placeholder='["hardwood", "tile"]' />
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div className="form-group small-input">
+            <label htmlFor="has_fireplace">Has Fireplace</label>
+            <input type="checkbox" id="has_fireplace" name="has_fireplace" checked={formData.has_fireplace} onChange={handleCheckboxChange} />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="fireplace_features">Fireplace Features</label>
+            <input type="text" id="fireplace_features" name="fireplace_features" value={formData.fireplace_features} onChange={handleInputChange} />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="view_description">View Description</label>
+            <input type="text" id="view_description" name="view_description" value={formData.view_description} onChange={handleInputChange} />
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="parking">Parking (JSON)</label>
+            <input type="text" id="parking" name="parking" value={JSON.stringify(formData.parking)} onChange={handleInputChange} placeholder='{"garage": 1, "driveway": 0}' />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="utilities">Utilities (JSON)</label>
+            <input type="text" id="utilities" name="utilities" value={JSON.stringify(formData.utilities)} onChange={handleInputChange} placeholder='{"water": "public", "electric": "underground"}' />
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div className="form-group small-input">
+            <label htmlFor="taxes">Taxes</label>
+            <input type="number" step="0.01" id="taxes" name="taxes" value={formData.taxes} onChange={handleInputChange} />
           </div>
         </div>
 
