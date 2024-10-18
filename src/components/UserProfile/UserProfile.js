@@ -56,6 +56,7 @@ const UserProfile = () => {
                 <p className="details">Bathrooms: {property.bathrooms}</p>
                 <p className="details">Area: {property.area} sq ft</p>
               </div>
+              <p className="property-id">Property ID: {property.property_id}</p>
             </div>
           ))
         ) : (
