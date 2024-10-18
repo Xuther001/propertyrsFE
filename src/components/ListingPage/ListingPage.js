@@ -91,7 +91,7 @@ const ListingPage = () => {
 
       {selectedListing && (
         <PropertyDetailsOverlay
-          listing={selectedListing}
+          listingId={selectedListing.property_id} // Pass the property_id here
           onClose={handleCloseOverlay}
         />
       )}
