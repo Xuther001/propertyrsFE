@@ -22,12 +22,19 @@ const ListingPage = () => {
                 `/propertyimages/${listing.property_id}/images`
               );
 
+              const images = imagesResponse.data.images || [];
+
+              // Select the 'main' image if available, otherwise use the first image or empty array
+              const mainImage =
+                images.find((img) => img.image_url.includes('main')) || images[0] || null;
+
               return {
                 ...listing,
-                images: imagesResponse.data.images || [],
+                images,
+                mainImage,
               };
             } catch {
-              return { ...listing, images: [] };
+              return { ...listing, images: [], mainImage: null };
             }
           })
         );
@@ -69,20 +76,15 @@ const ListingPage = () => {
             <p>Status: {listing.is_for_sale ? 'For Sale' : 'Not for Sale'}</p>
             <p>Available From: {new Date(listing.available_from).toLocaleDateString()}</p>
 
-            <div className="image-gallery">
-              {listing.images.length > 0 ? (
-                listing.images.map((image, index) => (
-                  <img
-                    key={index}
-                    src={image.image_url}
-                    alt={`Property ${listing.property_id} - ${index + 1}`}
-                    className="property-image"
-                  />
-                ))
-              ) : (
-                <p>No images available</p>
-              )}
-            </div>
+            {listing.mainImage ? (
+              <img
+                src={listing.mainImage.image_url}
+                alt={`Property ${listing.property_id} - Main`}
+                className="property-image"
+              />
+            ) : (
+              <p>No main image available</p>
+            )}
           </div>
         ))}
       </div>
