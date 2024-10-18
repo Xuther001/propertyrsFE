@@ -22,6 +22,7 @@ const Home = () => {
           <>
             <Link to="/register" className="register-link">Create an Account</Link>
             <Link to="/login" className="login-link">Login</Link>
+            <Link to="/listingpage" className="listingpage-link">See all listings</Link>
           </>
         )}
         {isLoggedIn && (
@@ -30,6 +31,7 @@ const Home = () => {
             <Link to="/myprofile" className="profile-link">My Properties</Link>
             <Link to="/listingform" className="listing-form-link">List a Property</Link>
             <Link to="/" onClick={handleLogout} className="logout-link">Logout</Link>
+            <Link to="/listingpage" className="listingpage-link">See all listings</Link>
           </>
         )}
       </div>
