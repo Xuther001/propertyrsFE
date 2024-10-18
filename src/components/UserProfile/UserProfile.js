@@ -43,7 +43,7 @@ const UserProfile = () => {
                     <img
                       key={index}
                       src={image.image_url}
-                      alt={`Property ${property.property_id} - Image ${index + 1}`}
+                      alt={`Property ${property.property_id} - ${index + 1}`}
                       className="property-image"
                     />
                   ))
