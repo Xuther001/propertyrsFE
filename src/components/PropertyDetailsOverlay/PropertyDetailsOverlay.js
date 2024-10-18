@@ -16,7 +16,7 @@ const PropertyDetailsOverlay = ({ listingId, price, status, availableFrom, onClo
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+            Authorization: `Bearer ${token}`,
           },
         });
 
@@ -61,26 +61,14 @@ const PropertyDetailsOverlay = ({ listingId, price, status, availableFrom, onClo
     );
   };
 
+  // Function to replace underscores with spaces
+  const formatString = (str) => str.replace(/_/g, ' ');
+
   return (
     <div className="overlay" onClick={onClose}>
       <div className="overlay-content" onClick={(e) => e.stopPropagation()}>
         <span className="close-button" onClick={onClose}>&times;</span>
-        <h2>{propertyDetails.description}</h2>
-        <p>Price: ${parseFloat(price).toFixed(2)}</p>
-        <p>Status: {status === true ? "For Sale" : "For Rent"}</p>
-        <p>Available From: {new Date(availableFrom).toLocaleDateString()}</p>
-        <p>Address: {propertyDetails.address}, {propertyDetails.city}, {propertyDetails.state}, {propertyDetails.postal_code}, {propertyDetails.country}</p>
-        <p>Bedrooms: {propertyDetails.bedrooms}</p>
-        <p>Bathrooms: {propertyDetails.bathrooms}</p>
-        <p>Area: {propertyDetails.area} sq. ft.</p>
-        <p>Lot Size: {propertyDetails.lot_size} acres</p>
-        <p>Year Built: {propertyDetails.year_built}</p>
-        <p>HOA Fee: ${propertyDetails.hoa_fee}</p>
-        <p>Parking: {propertyDetails.parking.join(', ')}</p>
-        <p>Utilities: {propertyDetails.utilities.join(', ')}</p>
-        <p>Taxes: ${propertyDetails.taxes}</p>
-        <p>Features: {propertyDetails.property_features.join(', ')}</p>
-
+        
         {propertyDetails.images.length > 0 && (
           <img
             src={propertyDetails.images[0].image_url}
@@ -89,6 +77,50 @@ const PropertyDetailsOverlay = ({ listingId, price, status, availableFrom, onClo
             onClick={() => handleOpenGallery(0)}
           />
         )}
+
+        <h2>{propertyDetails.description}</h2>
+
+        <div className="detail-section">
+          <h3>Price & Status</h3>
+          <div className="horizontal-details">
+            <p>Price: ${parseFloat(price).toFixed(2)}</p>
+            <p>Status: {status === true ? "For Sale" : "For Rent"}</p>
+            <p>Available From: {new Date(availableFrom).toLocaleDateString()}</p>
+          </div>
+        </div>
+
+        <div className="detail-section">
+          <h3>Address</h3>
+          <p>{propertyDetails.address}, {propertyDetails.city}, {propertyDetails.state}, {propertyDetails.postal_code}, {propertyDetails.country}</p>
+        </div>
+
+        <div className="detail-section">
+          <h3>Specifications</h3>
+          <div className="horizontal-details">
+            <p>Bedrooms: {propertyDetails.bedrooms}</p>
+            <p>Bathrooms: {propertyDetails.bathrooms}</p>
+            <p>Area: {propertyDetails.area} sq. ft.</p>
+            <p>Lot Size: {propertyDetails.lot_size} acres</p>
+            <p>Year Built: {propertyDetails.year_built}</p>
+          </div>
+        </div>
+
+        <div className="detail-section">
+          <h3>Financial Details</h3>
+          <div className="horizontal-details">
+            <p>HOA Fee: ${propertyDetails.hoa_fee}</p>
+            <p>Taxes: ${propertyDetails.taxes}</p>
+          </div>
+        </div>
+
+        <div className="detail-section">
+          <h3>Features</h3>
+          <div className="horizontal-details">
+            <p>Parking: {formatString(propertyDetails.parking.join(', '))}</p>
+            <p>Utilities: {formatString(propertyDetails.utilities.join(', '))}</p>
+            <p>Property Features: {formatString(propertyDetails.property_features.join(', '))}</p>
+          </div>
+        </div>
       </div>
 
       {isGalleryOpen && (
