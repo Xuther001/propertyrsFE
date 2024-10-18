@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './PropertyDetailsOverlay.css';
 
-const PropertyDetailsOverlay = ({ listingId, onClose }) => {
+const PropertyDetailsOverlay = ({ listingId, price, status, availableFrom, onClose }) => {
   const [isGalleryOpen, setGalleryOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [propertyDetails, setPropertyDetails] = useState(null);
@@ -16,7 +16,7 @@ const PropertyDetailsOverlay = ({ listingId, onClose }) => {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`, // Include the token in the Authorization header
           },
         });
 
@@ -66,9 +66,9 @@ const PropertyDetailsOverlay = ({ listingId, onClose }) => {
       <div className="overlay-content" onClick={(e) => e.stopPropagation()}>
         <span className="close-button" onClick={onClose}>&times;</span>
         <h2>{propertyDetails.description}</h2>
-        <p>Price: ${parseFloat(propertyDetails.price).toFixed(2)}</p>
-        <p>Status: {propertyDetails.is_for_sale ? 'For Sale' : 'Not for Sale'}</p>
-        <p>Available From: {new Date(propertyDetails.available_from).toLocaleDateString()}</p>
+        <p>Price: ${parseFloat(price).toFixed(2)}</p>
+        <p>Status: {status === true ? "For Sale" : "For Rent"}</p>
+        <p>Available From: {new Date(availableFrom).toLocaleDateString()}</p>
         <p>Address: {propertyDetails.address}, {propertyDetails.city}, {propertyDetails.state}, {propertyDetails.postal_code}, {propertyDetails.country}</p>
         <p>Bedrooms: {propertyDetails.bedrooms}</p>
         <p>Bathrooms: {propertyDetails.bathrooms}</p>

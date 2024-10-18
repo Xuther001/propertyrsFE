@@ -91,7 +91,10 @@ const ListingPage = () => {
 
       {selectedListing && (
         <PropertyDetailsOverlay
-          listingId={selectedListing.property_id} // Pass the property_id here
+          listingId={selectedListing.property_id} // We are passing the property_id here
+          price={selectedListing.price} //We are also passing price
+          status={selectedListing.is_for_sale}
+          availableFrom={selectedListing.available_from}
           onClose={handleCloseOverlay}
         />
       )}
