@@ -3,6 +3,35 @@ import { Link } from 'react-router-dom';
 import axiosInstance from '../../configs/AxiosConfig';
 import './CreateProperty.css';
 
+const propertyFeaturesOptions = [
+  { label: 'Open Floor Plan', value: 'open_floorplan' },
+  { label: 'Kitchen Island', value: 'kitchen_island' },
+  { label: 'Smart Home', value: 'smart_home' },
+  { label: 'Swimming Pool', value: 'swimming_pool' },
+  { label: 'Garden', value: 'garden' },
+];
+
+const flooringOptions = [
+  { label: 'Hardwood', value: 'hardwood' },
+  { label: 'Tile', value: 'tile' },
+  { label: 'Carpet', value: 'carpet' },
+  { label: 'Laminate', value: 'laminate' },
+  { label: 'Vinyl', value: 'vinyl' },
+];
+
+const parkingOptions = [
+  { label: 'Garage', value: 'garage' },
+  { label: 'Driveway', value: 'driveway' },
+  { label: 'Street Parking', value: 'street_parking' },
+];
+
+const utilitiesOptions = [
+  { label: 'Public Water', value: 'public_water' },
+  { label: 'Well Water', value: 'well_water' },
+  { label: 'Public Electricity', value: 'public_electricity' },
+  { label: 'Solar', value: 'solar' },
+];
+
 const CreateProperty = () => {
   const [formData, setFormData] = useState({
     address: '',
@@ -17,13 +46,13 @@ const CreateProperty = () => {
     lot_size: '',
     year_built: '',
     hoa_fee: '',
-    property_features: {},
+    property_features: [],
     flooring: [],
     has_fireplace: false,
     fireplace_features: '',
     view_description: '',
-    parking: {},
-    utilities: {},
+    parking: [],
+    utilities: [],
     taxes: '',
     images: [],
   });
@@ -36,9 +65,21 @@ const CreateProperty = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleCheckboxChange = (e) => {
-    const { name, checked } = e.target;
-    setFormData({ ...formData, [name]: checked });
+  const handleCheckboxChange = (name, value) => {
+    setFormData((prevState) => {
+      const currentValues = prevState[name];
+      if (currentValues.includes(value)) {
+        return {
+          ...prevState,
+          [name]: currentValues.filter((item) => item !== value),
+        };
+      } else {
+        return {
+          ...prevState,
+          [name]: [...currentValues, value],
+        };
+      }
+    });
   };
 
   const handleImageChange = (e) => {
@@ -88,13 +129,13 @@ const CreateProperty = () => {
             lot_size: '',
             year_built: '',
             hoa_fee: '',
-            property_features: {},
+            property_features: [],
             flooring: [],
             has_fireplace: false,
             fireplace_features: '',
             view_description: '',
-            parking: {},
-            utilities: {},
+            parking: [],
+            utilities: [],
             taxes: '',
             images: [],
           });
@@ -109,15 +150,13 @@ const CreateProperty = () => {
     <div className="post-property-form">
       <div className="form-header">
         <h2>Add a Property</h2>
-        <div className="form-navigation">
-          <Link to="/" className="home-button">Home</Link>
-        </div>
+        <Link to="/" className="home-button">Home</Link>
       </div>
 
       {success && <div className="success">Property posted successfully!</div>}
       {error && <div className="error">{error}</div>}
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="property-form">
         <div className="form-row">
           <div className="form-group">
             <label htmlFor="address">Street</label>
@@ -182,56 +221,110 @@ const CreateProperty = () => {
 
           <div className="form-group small-input">
             <label htmlFor="hoa_fee">HOA Fee</label>
-            <input type="number" step="0.01" id="hoa_fee" name="hoa_fee" value={formData.hoa_fee} onChange={handleInputChange} />
+            <input type="number" id="hoa_fee" name="hoa_fee" value={formData.hoa_fee} onChange={handleInputChange} />
           </div>
         </div>
 
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="property_features">Property Features (JSON)</label>
-            <input type="text" id="property_features" name="property_features" value={JSON.stringify(formData.property_features)} onChange={handleInputChange} placeholder='{"open_floorplan": true}' />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="flooring">Flooring (JSON)</label>
-            <input type="text" id="flooring" name="flooring" value={JSON.stringify(formData.flooring)} onChange={handleInputChange} placeholder='["hardwood", "tile"]' />
-          </div>
-        </div>
-
-        <div className="form-row">
-          <div className="form-group small-input">
-            <label htmlFor="has_fireplace">Has Fireplace</label>
-            <input type="checkbox" id="has_fireplace" name="has_fireplace" checked={formData.has_fireplace} onChange={handleCheckboxChange} />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="fireplace_features">Fireplace Features</label>
-            <input type="text" id="fireplace_features" name="fireplace_features" value={formData.fireplace_features} onChange={handleInputChange} />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="view_description">View Description</label>
-            <input type="text" id="view_description" name="view_description" value={formData.view_description} onChange={handleInputChange} />
+        {/* Checkboxes for Property Features */}
+        <div className="form-group">
+          <label>Property Features</label>
+          <div className="checkbox-group">
+            {propertyFeaturesOptions.map((option) => (
+              <label key={option.value} className="checkbox-label">
+                <input
+                  type="checkbox"
+                  id={option.value}
+                  checked={formData.property_features.includes(option.value)}
+                  onChange={() => handleCheckboxChange('property_features', option.value)}
+                />
+                {option.label}
+              </label>
+            ))}
           </div>
         </div>
 
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="parking">Parking (JSON)</label>
-            <input type="text" id="parking" name="parking" value={JSON.stringify(formData.parking)} onChange={handleInputChange} placeholder='{"garage": 1, "driveway": 0}' />
+        {/* Checkboxes for Flooring */}
+        <div className="form-group">
+          <label>Flooring</label>
+          <div className="checkbox-group">
+            {flooringOptions.map((option) => (
+              <label key={option.value} className="checkbox-label">
+                <input
+                  type="checkbox"
+                  id={option.value}
+                  checked={formData.flooring.includes(option.value)}
+                  onChange={() => handleCheckboxChange('flooring', option.value)}
+                />
+                {option.label}
+              </label>
+            ))}
           </div>
+        </div>
 
-          <div className="form-group">
-            <label htmlFor="utilities">Utilities (JSON)</label>
-            <input type="text" id="utilities" name="utilities" value={JSON.stringify(formData.utilities)} onChange={handleInputChange} placeholder='{"water": "public", "electric": "underground"}' />
+        {/* Checkboxes for Parking */}
+        <div className="form-group">
+          <label>Parking</label>
+          <div className="checkbox-group">
+            {parkingOptions.map((option) => (
+              <label key={option.value} className="checkbox-label">
+                <input
+                  type="checkbox"
+                  id={option.value}
+                  checked={formData.parking.includes(option.value)}
+                  onChange={() => handleCheckboxChange('parking', option.value)}
+                />
+                {option.label}
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Checkboxes for Utilities */}
+        <div className="form-group">
+          <label>Utilities</label>
+          <div className="checkbox-group">
+            {utilitiesOptions.map((option) => (
+              <label key={option.value} className="checkbox-label">
+                <input
+                  type="checkbox"
+                  id={option.value}
+                  checked={formData.utilities.includes(option.value)}
+                  onChange={() => handleCheckboxChange('utilities', option.value)}
+                />
+                {option.label}
+              </label>
+            ))}
           </div>
         </div>
 
         <div className="form-row">
           <div className="form-group small-input">
             <label htmlFor="taxes">Taxes</label>
-            <input type="number" step="0.01" id="taxes" name="taxes" value={formData.taxes} onChange={handleInputChange} />
+            <input type="number" id="taxes" name="taxes" value={formData.taxes} onChange={handleInputChange} />
           </div>
+
+          <div className="form-group">
+            <label htmlFor="has_fireplace">Has Fireplace?</label>
+            <input
+              type="checkbox"
+              id="has_fireplace"
+              name="has_fireplace"
+              checked={formData.has_fireplace}
+              onChange={(e) => setFormData({ ...formData, has_fireplace: e.target.checked })}
+            />
+          </div>
+        </div>
+
+        {formData.has_fireplace && (
+          <div className="form-group">
+            <label htmlFor="fireplace_features">Fireplace Features</label>
+            <input type="text" id="fireplace_features" name="fireplace_features" value={formData.fireplace_features} onChange={handleInputChange} />
+          </div>
+        )}
+
+        <div className="form-group">
+          <label htmlFor="view_description">View Description</label>
+          <input type="text" id="view_description" name="view_description" value={formData.view_description} onChange={handleInputChange} />
         </div>
 
         <div className="form-group">
