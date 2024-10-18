@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../configs/AxiosConfig';
 import './ListingForm.css';
 
@@ -19,6 +20,11 @@ const ListingForm = () => {
       ...prevData,
       [name]: value,
     }));
+  };
+
+  const navigate = useNavigate();
+  const handleNavigate = () => {
+    navigate('/myprofile');
   };
 
   const handleSubmit = async (e) => {
@@ -50,7 +56,11 @@ const ListingForm = () => {
       <h1>Create Listing</h1>
       <form onSubmit={handleSubmit}>
         <label>
-          Property ID:
+          Property ID
+          <span style={{ fontStyle: 'italic', fontSize: '0.9em', marginLeft: '5px' }}>
+            (Property ID can be found from your <span onClick={handleNavigate} 
+          style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}>My Properties</span> section)
+          </span>:
           <input
             type="text"
             name="property_id"
