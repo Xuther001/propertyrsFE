@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../../configs/AxiosConfig';
 import './UserProfile.css';
+import EditProperty from './EditProperty/EditProperty';
 
 const UserProfile = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedPropertyId, setSelectedPropertyId] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -23,9 +26,14 @@ const UserProfile = () => {
     fetchProperties();
   }, []);
 
-  const handleEdit = (propertyId) => {
-    console.log(`Editing property with ID: ${propertyId}`);
-    // Will write logic soon
+  const closeModal = () => {
+    setIsEditModalOpen(false);
+    setSelectedPropertyId(null);
+  }
+
+  const handleEditClick = (propertyId) => {
+    setSelectedPropertyId(propertyId);
+    setIsEditModalOpen(true);
   };
 
   if (loading) return <p className="loading-text">Loading...</p>;
@@ -40,7 +48,7 @@ const UserProfile = () => {
             <div key={property.property_id} className="property-card">
               <button
                 className="edit-button"
-                onClick={() => handleEdit(property.property_id)}
+                onClick={() => handleEditClick(property.property_id)}
               >
                 Edit
               </button>
@@ -74,6 +82,15 @@ const UserProfile = () => {
           <p>No properties found.</p>
         )}
       </div>
+
+      {isEditModalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <button onClick={closeModal}>Close</button>
+            <EditProperty propertyId={selectedPropertyId} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
