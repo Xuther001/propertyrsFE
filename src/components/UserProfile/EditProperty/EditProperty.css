@@ -1,0 +1,71 @@
+.post-property-form {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.form-header {
+  text-align: center;
+}
+
+.success {
+  color: green;
+  margin-bottom: 10px;
+}
+
+.error {
+  color: red;
+  margin-bottom: 10px;
+}
+
+.property-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.form-group {
+  flex: 1;
+  min-width: 200px;
+  margin-right: 15px;
+}
+
+.features-section, .flooring-section, .parking-section, .utilities-section {
+  margin-top: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.features-section:last-child,
+.flooring-section:last-child,
+.parking-section:last-child,
+.utilities-section:last-child {
+  margin-right: 0;
+}
+
+h3 {
+  margin: 0 0 10px;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.checkbox-group label {
+  margin: 5px 0;
+}
+
+.submit-button {
+  margin-top: 20px;
+}

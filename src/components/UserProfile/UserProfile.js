@@ -29,7 +29,7 @@ const UserProfile = () => {
   const closeModal = () => {
     setIsEditModalOpen(false);
     setSelectedPropertyId(null);
-  }
+  };
 
   const handleEditClick = (propertyId) => {
     setSelectedPropertyId(propertyId);
@@ -84,10 +84,10 @@ const UserProfile = () => {
       </div>
 
       {isEditModalOpen && (
-        <div className="modal">
+        <div className="modal-overlay">
           <div className="modal-content">
             <button onClick={closeModal}>Close</button>
-            <EditProperty propertyId={selectedPropertyId} />
+            <EditProperty propertyId={selectedPropertyId} onClose={closeModal} />
           </div>
         </div>
       )}
