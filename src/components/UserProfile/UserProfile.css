@@ -85,23 +85,7 @@
 
 .delete-button {
   position: absolute;
-  top: 10px;
-  right: 255px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 5px 10px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-  width: auto;
-  height: auto;
-}
-
-.edit-button {
-  position: absolute;
-  top: 10px;
+  top: 350px;
   right: 10px;
   background-color: #4caf50;
   color: white;
@@ -111,8 +95,24 @@
   cursor: pointer;
   font-size: 16px;
   transition: background-color 0.3s ease;
-  width: auto;
-  height: auto;
+  width: 100px;
+  height: 35px;
+}
+
+.edit-button {
+  position: absolute;
+  top: 310px;
+  right: 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  width: 100px;
+  height: 35px;
 }
 
 .edit-button:hover {
