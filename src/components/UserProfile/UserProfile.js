@@ -46,6 +46,9 @@ const UserProfile = () => {
         {properties.length > 0 ? (
           properties.map((property) => (
             <div key={property.property_id} className="property-card">
+              <button className="delete-button">
+                Delete
+                </button>
               <button
                 className="edit-button"
                 onClick={() => handleEditClick(property.property_id)}

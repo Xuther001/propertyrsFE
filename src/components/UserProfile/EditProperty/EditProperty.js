@@ -331,7 +331,7 @@ const EditProperty = ({ propertyId, onClose }) => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="images">Property Images</label>
+            <label htmlFor="images">Add Property Images</label>
             <input type="file" id="images" name="images" multiple onChange={handleImageChange} />
           </div>
         </div>
