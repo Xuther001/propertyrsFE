@@ -58,9 +58,6 @@ const UserProfile = () => {
               propertyId={property.property_id}
               onDelete={() => handlePropertyDelete(property.property_id)}
               />
-              {/* <button className="delete-button">
-                Delete
-                </button> */}
               <button
                 className="edit-button"
                 onClick={() => handleEditClick(property.property_id)}
