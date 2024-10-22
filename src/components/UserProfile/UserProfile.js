@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axiosInstance from '../../configs/AxiosConfig';
 import './UserProfile.css';
 import EditProperty from './EditProperty/EditProperty';
+import DeleteProperty from './DeleteProperty/DeleteProperty';
 
 const UserProfile = () => {
   const [properties, setProperties] = useState([]);
@@ -36,6 +37,13 @@ const UserProfile = () => {
     setIsEditModalOpen(true);
   };
 
+  const handlePropertyDelete = (deletedPropertyId) => {
+    setProperties((prevProperties) => 
+      prevProperties.filter((property) => 
+        property.property_id !== deletedPropertyId)
+    );
+  };
+
   if (loading) return <p className="loading-text">Loading...</p>;
   if (error) return <p className="error-text">{error}</p>;
 
@@ -46,9 +54,13 @@ const UserProfile = () => {
         {properties.length > 0 ? (
           properties.map((property) => (
             <div key={property.property_id} className="property-card">
-              <button className="delete-button">
+              <DeleteProperty
+              propertyId={property.property_id}
+              onDelete={() => handlePropertyDelete(property.property_id)}
+              />
+              {/* <button className="delete-button">
                 Delete
-                </button>
+                </button> */}
               <button
                 className="edit-button"
                 onClick={() => handleEditClick(property.property_id)}
