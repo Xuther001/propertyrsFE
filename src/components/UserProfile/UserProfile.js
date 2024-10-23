@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import axiosInstance from '../../configs/AxiosConfig';
 import './UserProfile.css';
 import EditProperty from './EditProperty/EditProperty';
-import DeleteProperty from './DeleteProperty/DeleteProperty';
 
 const UserProfile = () => {
   const [properties, setProperties] = useState([]);
-  const [deletePropertyOverlay, setDeletePropertyOverlay] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedPropertyId, setSelectedPropertyId] = useState(null);
   const [error, setError] = useState(null);
+  const [deletePropertyOverlay, setDeletePropertyOverlay] = useState(false);
+  const [propertyToDelete, setPropertyToDelete] = useState(null);
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -43,10 +43,26 @@ const UserProfile = () => {
       prevProperties.filter((property) => 
         property.property_id !== deletedPropertyId)
     );
+    setDeletePropertyOverlay(false);
+    setPropertyToDelete(null);
   };
 
-  const toggleDeletePropertyOverlay = () => {
+  const toggleDeletePropertyOverlay = (propertyId) => {
+    setPropertyToDelete(propertyId);
     setDeletePropertyOverlay(!deletePropertyOverlay);
+  }
+
+  const handleDeleteConfirm = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      await axiosInstance.delete(`/property/${propertyToDelete}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      handlePropertyDelete(propertyToDelete);
+    } catch (err) {
+      setError('Failed to delete property');
+      console.error(err);
+    }
   }
 
   if (loading) return <p className="loading-text">Loading...</p>;
@@ -59,14 +75,9 @@ const UserProfile = () => {
         {properties.length > 0 ? (
           properties.map((property) => (
             <div key={property.property_id} className="property-card">
-              {/* <DeleteProperty
-              propertyId={property.property_id}
-              onDelete={() => handlePropertyDelete(property.property_id)}
-              /> */}
-              <button className="delete-button" onClick={toggleDeletePropertyOverlay}>
+              <button className="delete-button" onClick={() => toggleDeletePropertyOverlay(property.property_id)}>
                 Delete
               </button>
-              {deletePropertyOverlay && <DeleteProperty onDelete={() => handlePropertyDelete(property.property_id)} onClose={toggleDeletePropertyOverlay} />}
               <button
                 className="edit-button"
                 onClick={() => handleEditClick(property.property_id)}
@@ -103,6 +114,26 @@ const UserProfile = () => {
           <p>No properties found.</p>
         )}
       </div>
+
+      {deletePropertyOverlay && (
+        <div className="delete-overlay">
+          <div className="delete-modal">
+            <h2>Confirm Deletion</h2>
+            <p>
+              Are you sure you want to delete this property? <br />
+              This action cannot be undone.
+            </p>
+            <div className="button-group">
+              <button className="confirm-button" onClick={handleDeleteConfirm}>
+                Delete
+              </button>
+              <button className="cancel-button" onClick={() => toggleDeletePropertyOverlay(null)}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {isEditModalOpen && (
         <div className="modal-overlay">
