@@ -6,6 +6,7 @@ import DeleteProperty from './DeleteProperty/DeleteProperty';
 
 const UserProfile = () => {
   const [properties, setProperties] = useState([]);
+  const [deletePropertyOverlay, setDeletePropertyOverlay] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedPropertyId, setSelectedPropertyId] = useState(null);
@@ -44,6 +45,10 @@ const UserProfile = () => {
     );
   };
 
+  const toggleDeletePropertyOverlay = () => {
+    setDeletePropertyOverlay(!deletePropertyOverlay);
+  }
+
   if (loading) return <p className="loading-text">Loading...</p>;
   if (error) return <p className="error-text">{error}</p>;
 
@@ -54,10 +59,14 @@ const UserProfile = () => {
         {properties.length > 0 ? (
           properties.map((property) => (
             <div key={property.property_id} className="property-card">
-              <DeleteProperty
+              {/* <DeleteProperty
               propertyId={property.property_id}
               onDelete={() => handlePropertyDelete(property.property_id)}
-              />
+              /> */}
+              <button className="delete-button" onClick={toggleDeletePropertyOverlay}>
+                Delete
+              </button>
+              {deletePropertyOverlay && <DeleteProperty onDelete={() => handlePropertyDelete(property.property_id)} onClose={toggleDeletePropertyOverlay} />}
               <button
                 className="edit-button"
                 onClick={() => handleEditClick(property.property_id)}
