@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../configs/AxiosConfig';
 import './CreateProperty.css';
 
@@ -59,6 +59,7 @@ const CreateProperty = () => {
 
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -105,42 +106,23 @@ const CreateProperty = () => {
 
       if (response.status === 201) {
         const propertyId = response.data.property.property_id;
-        const formDataImages = new FormData();
-        formData.images.forEach((image) => formDataImages.append('images', image));
-
-        const uploadResponse = await axiosInstance.post(
-          `/property/${propertyId}/images`,
-          formDataImages,
-          { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' } }
-        );
-
-        if (uploadResponse.status === 200) {
-          setSuccess(true);
-          setFormData({
-            address: '',
-            city: '',
-            state: '',
-            postal_code: '',
-            country: '',
-            property_type: '',
-            bedrooms: '',
-            bathrooms: '',
-            area: '',
-            lot_size: '',
-            year_built: '',
-            hoa_fee: '',
-            property_features: [],
-            flooring: [],
-            has_fireplace: false,
-            fireplace_features: '',
-            view_description: '',
-            parking: [],
-            utilities: [],
-            taxes: '',
-            images: [],
-          });
+      
+        try {
+          const formDataImages = new FormData();
+          formData.images.forEach((image) => formDataImages.append('images', image));
+      
+          await axiosInstance.post(
+            `/property/${propertyId}/images`,
+            formDataImages,
+            { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' } }
+          );
+        } catch (uploadError) {
+          console.error('Image upload failed:', uploadError);
         }
-      }
+      
+        setSuccess(true);
+        navigate('/myprofile');
+      }      
     } catch (err) {
       setError(err.response?.data?.message || 'Error posting property');
     }

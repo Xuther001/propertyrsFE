@@ -43,6 +43,7 @@ const ListingForm = () => {
       });
       setMessage('Listing created successfully!');
       console.log(response.data);
+      navigate('/listingpage');
     } catch (error) {
       console.error(error);
       setMessage('Failed to create listing. Try again.');
