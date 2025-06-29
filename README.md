@@ -4,7 +4,7 @@ Frontend (PropertyrsFE) Setup
 
 1. Clone this repository: git clone https://github.com/Xuther001/propertyrsFE.git
 
-2. Go to propertyrsFE/src/configs/AxiosConfig.js
+2. Go to propertyrsFE/src/configs/AxiosConfig.js<br>
    Edit AxiosConfig like so:
 <pre><code>
   import axios from 'axios';
